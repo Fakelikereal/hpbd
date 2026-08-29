@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chúc Mừng Sinh Nhật!</title>
+    <!-- Thư viện Canvas Confetti tạo hiệu ứng pháo hoa -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -21,6 +23,38 @@
             text-align: center;
             padding: 20px;
             overflow: hidden;
+            position: relative;
+        }
+
+        /* Container cho bóng bóng bay */
+        .balloon-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            opacity: 0.7;
+            border-radius: 50%;
+            animation: floatUp 8s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-120vh) rotate(360deg);
+                opacity: 0;
+            }
         }
 
         .card {
@@ -32,6 +66,8 @@
             width: 100%;
             backdrop-filter: blur(5px);
             animation: fadeIn 1.5s ease-in-out;
+            position: relative;
+            z-index: 10;
         }
 
         h1 {
@@ -86,12 +122,15 @@
 </head>
 <body>
 
+    <!-- Nơi chứa bong bóng -->
+    <div class="balloon-container" id="balloonContainer"></div>
+
     <div class="card">
         <div class="cake-emoji">🎂✨</div>
         <h1>Chúc Mừng Sinh Nhật!</h1>
         
         <p class="message">
-            Chúc mày sớm thống trị giới hoạ nô trong nước và thế giới! 🎉💖
+            Chúc mày sớm thống trị giới hoạ nô trong nước và thế giới! 🎨💖
         </p>
 
         <button class="btn-music" id="playBtn" onclick="toggleMusic()">🎵 Mở Nhạc Mừng Sinh Nhật</button>
@@ -105,17 +144,77 @@
         const music = document.getElementById("bgMusic");
         const btn = document.getElementById("playBtn");
 
+        music.loop = true;
+
         function toggleMusic() {
             if (music.paused) {
                 music.play();
                 btn.innerText = "⏸️ Tắt Nhạc";
                 btn.style.backgroundColor = "#70a1ff";
+                
+                // Bắn pháo hoa khi bấm mở nhạc
+                fireworks();
             } else {
                 music.pause();
                 btn.innerText = "🎵 Mở Nhạc Mừng Sinh Nhật";
                 btn.style.backgroundColor = "#ff4757";
             }
         }
+
+        // 1. Hàm tạo hiệu ứng pháo hoa giấy (Confetti)
+        function fireworks() {
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                
+                // Bắn pháo hoa từ 2 góc dưới màn hình
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        function randomInRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        // 2. Hàm tạo bong bóng trôi từ dưới lên
+        function createBalloons() {
+            const container = document.getElementById('balloonContainer');
+            const colors = ['#ff4757', '#ffa502', '#2ed573', '#1e90ff', '#ed4337', '#e84393'];
+            const balloonCount = 15;
+
+            for (let i = 0; i < balloonCount; i++) {
+                const balloon = document.createElement('div');
+                balloon.classList.add('balloon');
+
+                // Kích thước ngẫu nhiên
+                const size = Math.random() * 30 + 20;
+                balloon.style.width = `${size}px`;
+                balloon.style.height = `${size * 1.2}px`;
+
+                // Màu sắc & vị trí ngẫu nhiên
+                balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                balloon.style.left = `${Math.random() * 100}%`;
+                
+                // Thời gian bay và độ trễ ngẫu nhiên
+                balloon.style.animationDuration = `${Math.random() * 5 + 6}s`;
+                balloon.style.animationDelay = `${Math.random() * 5}s`;
+
+                container.appendChild(balloon);
+            }
+        }
+
+        // Tự động tạo bong bóng khi tải trang
+        createBalloons();
     </script>
 </body>
 </html>
