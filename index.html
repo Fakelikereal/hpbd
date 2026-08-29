@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc Mừng Sinh Nhật!</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        h1 {
+            color: #ff4757;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cake-emoji {
+            font-size: 4rem;
+            margin: 15px 0;
+            animation: bounce 2s infinite;
+        }
+
+        .message {
+            color: #2f3542;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .btn-music {
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-music:hover {
+            background-color: #ff6b81;
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="cake-emoji">🎂✨</div>
+        <h1>Chúc Mừng Sinh Nhật!</h1>
+        
+        <p class="message">
+            Chúc mày sớm thống trị giới hoạ nô trong nước và thế giới! 🎉💖
+        </p>
+
+        <button class="btn-music" id="playBtn" onclick="toggleMusic()">🎵 Mở Nhạc Mừng Sinh Nhật</button>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="hpbd.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const music = document.getElementById("bgMusic");
+        const btn = document.getElementById("playBtn");
+
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                btn.innerText = "⏸️ Tắt Nhạc";
+                btn.style.backgroundColor = "#70a1ff";
+            } else {
+                music.pause();
+                btn.innerText = "🎵 Mở Nhạc Mừng Sinh Nhật";
+                btn.style.backgroundColor = "#ff4757";
+            }
+        }
+    </script>
+</body>
+</html>
